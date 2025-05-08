@@ -1,0 +1,48 @@
+version: "3.9"
+# name: "road_vision"
+services:
+  mqtt:
+    image: eclipse-mosquitto
+    container_name: mqtt
+    volumes:
+      - ./mosquitto:/mosquitto
+      - ./mosquitto/data:/mosquitto/data
+      - ./mosquitto/log:/mosquitto/log
+    ports:
+      - 1883:1883
+      - 19001:9001
+    networks:
+      mqtt_network:
+
+
+  edge:
+    container_name: edge
+    build: ../
+    depends_on:
+      - mqtt
+    environment:
+      MQTT_BROKER_HOST: "mqtt"
+      MQTT_BROKER_PORT: 1883
+      MQTT_TOPIC: " "
+      HUB_HOST: "store"
+      HUB_PORT: 8000
+      HUB_MQTT_BROKER_HOST: "mqtt"
+      HUB_MQTT_BROKER_PORT: 1883
+      HUB_MQTT_TOPIC: "processed_data_topic"
+    networks:
+      mqtt_network:
+      edge_hub:
+
+
+networks:
+  mqtt_network:
+  db_network:
+  edge_hub:
+  hub:
+  hub_store:
+  hub_redis:
+
+
+volumes:
+  postgres_data:
+  pgadmin-data:
