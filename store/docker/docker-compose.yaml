@@ -1,0 +1,60 @@
+version: "3.9"
+name: "road_vision__database"
+services:
+  postgres_db:
+    image: postgres:latest
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: test_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./db/structure.sql:/docker-entrypoint-initdb.d/structure.sql
+    ports:
+      - "5432:5432"
+    networks:
+      db_network:
+
+
+  pgadmin:
+    container_name: pgadmin4
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: root
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    ports:
+      - "5050:80"
+    networks:
+      db_network:
+
+
+  store:
+    container_name: store
+    build: ..
+    depends_on:
+      - postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: test_db
+      POSTGRES_HOST: postgres_db
+      POSTGRES_PORT: 5432
+    ports:
+      - "8000:8000"
+    networks:
+      db_network:
+
+
+networks:
+  db_network:
+
+
+volumes:
+  postgres_data:
+  pgadmin-data:
