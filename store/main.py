@@ -63,9 +63,9 @@ class ProcessedAgentDataInDB(BaseModel):
 
 # FastAPI models
 class AccelerometerData(BaseModel):
-    x: float
-    y: float
-    z: float
+    x: int
+    y: int
+    z: int
 
 
 class GpsData(BaseModel):
@@ -74,10 +74,10 @@ class GpsData(BaseModel):
 
 
 class AgentData(BaseModel):
-    user_id: int
     accelerometer: AccelerometerData
     gps: GpsData
     timestamp: datetime
+    user_id: int
 
     @classmethod
     @field_validator("timestamp", mode="before")
