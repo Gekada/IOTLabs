@@ -10,6 +10,5 @@ from domain.parking import Parking
 class AggregatedData:
     accelerometer: Accelerometer
     gps: Gps
-    parking: Parking
     timestamp: datetime
     user_id: int

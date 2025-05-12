@@ -41,7 +41,6 @@ class FileDatasource:
         return AggregatedData(
             Accelerometer(*coords),
             Gps(*gps),
-            parking,
             datetime.now(),
             config.USER_ID,
         )

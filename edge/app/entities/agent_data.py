@@ -3,9 +3,9 @@ from pydantic import BaseModel, field_validator
 
 
 class AccelerometerData(BaseModel):
-    x: float
-    y: float
-    z: float
+    x: int
+    y: int
+    z: int
 
 
 class GpsData(BaseModel):
@@ -17,6 +17,7 @@ class AgentData(BaseModel):
     accelerometer: AccelerometerData
     gps: GpsData
     timestamp: datetime
+    user_id: int
 
     @classmethod
     @field_validator("timestamp", mode="before")
